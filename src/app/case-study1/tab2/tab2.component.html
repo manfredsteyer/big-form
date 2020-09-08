@@ -1,6 +1,7 @@
 <p>tab2 works!</p>
 
 {{ valid$ |async}}
-
-<input [formControl]="formControl">
+<form [formGroup]="form">
+    <input formControlName="info2">
+</form>
 <button (click)="next()">Next</button>

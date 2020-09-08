@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SimpleStore } from '../simple-store.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { selectIsBothValid } from '../selectors';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-tab3',
@@ -11,12 +12,15 @@ import { selectIsBothValid } from '../selectors';
 })
 export class Tab3Component implements OnInit {
 
-  valid$ = this.store.state.pipe(map(selectIsBothValid));
+  @Input() form: FormGroup;
 
-
+  valid$ = this.form?.statusChanges.pipe(map(x => this.form.valid));
+  
   constructor(private store: SimpleStore) { }
 
   ngOnInit(): void {
+    this.valid$ = this.form?.statusChanges.pipe(map(x => this.form.valid));
+
   }
 
 }

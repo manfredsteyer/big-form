@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SimpleStore, State } from './simple-store.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { selectIsBothValid } from './selectors';
-
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-case-study1',
@@ -14,17 +12,32 @@ import { selectIsBothValid } from './selectors';
 })
 export class CaseStudy1Component implements OnInit {
 
-  constructor(private store: SimpleStore) { }
+  formGroup: FormGroup;
 
-  valid$: Observable<any>;
-  state$: Observable<State>;
+  valid$: Observable<boolean>;
+  value$ = this.formGroup?.valueChanges;
+
+  constructor(
+    private fb: FormBuilder,
+    private store: SimpleStore) { }
+
 
   ngOnInit(): void {
-    this.state$ = this.store.state;
-    // this.valid$ = this.store.state.pipe(map(state => !!(state.info1 && state.info2)));
-    this.valid$ = this.store.state.pipe(map(s => ({
-      isBothValid: selectIsBothValid(s)
-    })));
+
+    // Abbild von Eurem Entity-Aggreat
+    this.formGroup = this.fb.group({
+      area1 : this.fb.group({
+        info1: ['', Validators.required]
+      }),
+      area2: this.fb.group({
+        info2: ['', Validators.required]
+      })
+    });
+
+    this.valid$ = this.formGroup.statusChanges.pipe(map(s => this.formGroup.valid));
+
+    this.value$ = this.formGroup?.valueChanges;
+
 
   }
 

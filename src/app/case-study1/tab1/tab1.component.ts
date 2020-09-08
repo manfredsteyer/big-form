@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { SimpleStore, State } from '../simple-store.service';
 import { first, map } from 'rxjs/operators';
 import { selectIsInput1Valid } from '../selectors';
@@ -10,32 +10,17 @@ import { selectIsInput1Valid } from '../selectors';
   templateUrl: './tab1.component.html',
   styleUrls: ['./tab1.component.css']
 })
-export class Tab1Component implements OnInit {
+export class Tab1Component  {
 
-  formControl = new FormControl();
+  @Input() form: FormGroup;
 
-  constructor(private store: SimpleStore) { }
+  valid$ = this.form?.statusChanges.pipe(map(x => this.form.valid));
 
-  state$ = this.store.state;
-  state: State;
-
-  valid$ = this.store.state.pipe(map(selectIsInput1Valid));
-
-  ngOnInit(): void {
-
-
-    this.state$.subscribe(state => {
-      this.formControl.setValue(state.info1);
-      this.state = state;
-    });
+  ngOnInit() {
+    this.valid$ = this.form?.statusChanges.pipe(map(x => this.form.valid));
   }
-
+  
   next(): void {
-
-      this.store.setState({
-      ...this.state,
-      info1: this.formControl.value,
-     });
   }
 
 }

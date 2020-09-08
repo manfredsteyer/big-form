@@ -1,10 +1,11 @@
 <p>case-study1 works!</p>
 
 Parent: {{ valid$ |async | json }}
-<app-tab1></app-tab1>
-<app-tab2></app-tab2>
-<app-tab3></app-tab3>
+
+<app-tab1 [form]="formGroup?.controls['area1']"></app-tab1>
+<app-tab2 [form]="formGroup?.controls['area2']"></app-tab2>
+<app-tab3 [form]="formGroup"></app-tab3>
 
 <pre>
-    {{ state$ |async |json}}
+    {{ value$ |async |json}}
 </pre>
