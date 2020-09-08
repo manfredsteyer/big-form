@@ -17,6 +17,7 @@ export class Tab2Component  {
 
   ngOnInit() {
     this.valid$ = this.form?.statusChanges.pipe(map(x => this.form.valid));
+    this.form.addControl('bla', new FormControl('Hallo'));
   }
 
   next(): void {
